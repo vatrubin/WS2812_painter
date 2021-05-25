@@ -1,6 +1,18 @@
 // НАСТРОЙКИ --------------------------------------------------------
 
-#define N_LEDS        60  // количество светодиодов (МАКСИМУМ 170!!!)
+// количество строчек в секунду:
+// формула: lpm*speed/3,6
+// speed - скорость в км/ч
+// lpm - сколько светодиодов на метр
+//
+// у меня 120 светодиодов на 2 метра, или 60 светодиодов на метр:
+// получается, для скорости 20 км/ч - 333 стр/с, для 30 км/ч - 500 стр/с, 
+#define LINES_PER_SEC 333  // количество строчек в секунду
+
+#define FRAMES_DELAY  100000  // задержка между кадрами
+
+
+#define N_LEDS        120  // количество светодиодов (МАКСИМУМ 170!!!)
 #define CARD_SELECT   10  // SD card select pin (some shields use #4, not 10)
 #define LED_PIN        6  // пин, куда подключен контакт DIN ленты
 #define SPEED         A0  // крутилка яркости
@@ -153,7 +165,7 @@ void setup() {
 
     // Read dial, setting brightness between 1 (almost but not quite off)
     // and the previously-estimated safe max.
-    minBrightness = map(analogRead(BRIGHTNESS), 0, 1023, 1, minBrightness);
+    minBrightness = 255;//map(analogRead(BRIGHTNESS), 0, 1023, 1, minBrightness); //max br
   
     // Second pass now applies brightness adjustment while converting
     // the image(s) from BMP to a raw representation of NeoPixel data
@@ -259,7 +271,8 @@ void loop() {
   // readBlock is used rather than readStart/readData/readEnd as
   // the duration between block reads may exceed the SD timeout.
 
-  while(digitalRead(TRIGGER) == HIGH);   // Wait for trigger button
+  //while(digitalRead(TRIGGER) == HIGH);   // Wait for trigger button. disabled - infinite loop
+  delay(FRAMES_DELAY); // delay between frames
 
 #ifdef ENCODERSTEPS
   // Set up for rotary encoder
@@ -267,7 +280,8 @@ void loop() {
   OCR1A = ENCODERSTEPS;
 #else
   // Set up timer based on dial input
-  uint32_t linesPerSec = map(analogRead(SPEED), 0, 1023, 10, maxLPS);
+  //map(analogRead(SPEED), 0, 1023, 10, maxLPS);
+  uint32_t linesPerSec = LINES_PER_SEC; 
   Serial.println("showtime");
   OCR1A = (F_CPU / 64) / linesPerSec;          // Timer1 interval
 #endif
