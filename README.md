@@ -4,7 +4,7 @@
 ## Как пользоваться
 - собрать [схему](#chapter-2)
 - открыть скетч [NeoPixel_Painter.ino](https://github.com/vatrubin/WS2812_painter/blob/master/NeoPixel_Painter/NeoPixel_Painter.ino)
-  - поправить в нем значение `LINES_PER_SEC` по формуле `(ожидаемая скорость в км/ч)*(количество светодиодов в секунду)/3,6`
+  - поправить в нем значение `LINES_PER_SEC` по формуле `(ожидаемая скорость в км/ч)*(количество светодоиодов на метр)/3,6`
   - указать `N_LEDS` - количество светодиодов
 - нарисовать картинку как в [примере](https://github.com/vatrubin/WS2812_painter/blob/master/BMPimages/bmp120/frame000.bmp)
   - ширина в пикселях должна быть равна количеству светодиодов в ленте
